@@ -25,5 +25,5 @@ class EventSpider(scrapy.Spider):
     def parse_detail_page(self, response):
         yield{
         'name': response.css('.overlay-h1 ::text').extract_first(),
-        'venu': response.css('.venue-li ::text').extract()[1],
+        'venue': response.css('.venue-li ::text').extract()[1],
         }
