@@ -3,6 +3,8 @@
 import scrapy
 from scrapy import Request
 from scrapy.utils.markup import remove_tags
+import dateparser
+
 
 headers = {
     "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36",
@@ -31,9 +33,9 @@ class EventSpider(scrapy.Spider):
         event_time = response.css('.meta-list li:nth-child(1) ::text').extract()[1].strip()
         times = event_time.split('to')
         if len(times)>=2:
-            event_time = {'start': times[0],'end':times[1]}
+            event_time = {'start': dateparser.parse(times[0]),'end': dateparser.parse(times[1])}
         else:
-            event_time = {'start': times[0],'end':""}
+            event_time = {'start': dateparser.parse(times[0]),'end':""}
         if response.css(".orginfo"):
             organizer = {
             'name':response.css('.orginfo .name ::text').extract()[1].strip(), 
